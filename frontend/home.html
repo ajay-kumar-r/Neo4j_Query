@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neo4j Web App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <span class="page-title">Neo4j Query App</span>
+    <button class="nav-button" onclick="window.location.href='query.html'">Query Page</button>
+  </div>
+
+  <!-- Main Content -->
+  <h1>Perform a Query</h1>
+  <div id="form-container">
+    <label for="query-type">Choose a query type:</label>
+    <select id="query-type">
+      <option value="find_user">Find a User</option>
+      <option value="find_friends">Find Friends of a User</option>
+      <option value="find_movie_lovers">Find Users Who Like a Movie</option>
+      <option value="suggest_friends">Suggest Friends</option>
+    </select>
+
+    <label for="name">Enter User Name:</label>
+    <input type="text" id="name" placeholder="User name">
+
+    <label for="movie">Enter Movie Title (if needed):</label>
+    <input type="text" id="movie" placeholder="Movie title">
+
+    <button id="submit-query">Submit Query</button>
+
+    <h2>Results</h2>
+    <pre id="results"></pre>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

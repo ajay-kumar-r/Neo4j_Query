@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direct Query</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <span class="page-title">Neo4j Query App</span>
+    <button class="nav-button" onclick="window.location.href='home.html'">Go Back</button>
+  </div>
+
+  <!-- Main Content -->
+  <h1>Enter a Query</h1>
+  <div id="form-container">
+    <label for="query-input">Enter Query:</label>
+    <input type="text" id="query-input" placeholder="Write your query here">
+
+    <button id="submit-query">Submit Query</button>
+
+    <h2>Results</h2>
+    <pre id="results"></pre>
+  </div>
+
+  <script>
+    document.getElementById('submit-query').addEventListener('click', async () => {
+      const query = document.getElementById('query-input').value;
+  
+      if (!query.trim()) {
+        alert('Query cannot be empty!');
+        return;
+      }
+  
+      try {
+        const response = await fetch('http://localhost:3000/api/direct_query', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to execute query. Please check your input.');
+        }
+  
+        const results = await response.json();
+        document.getElementById('results').textContent = JSON.stringify(results, null, 2);
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('results').textContent = `Error: ${error.message}`;
+      }
+    });
+  </script>
+  
+</body>
+</html>
