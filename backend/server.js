@@ -5,14 +5,11 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-// Neo4j setup
 const driver = neo4j.driver('neo4j://localhost:7687', neo4j.auth.basic('neo4j', 'password'));
 
-// Middleware
-app.use(express.json()); // To parse JSON bodies
-app.use(cors());         // To allow frontend access
+app.use(express.json());
+app.use(cors());
 
-// Utility function to execute queries
 const executeQuery = async (query, params = {}) => {
     const session = driver.session();
     try {
@@ -23,7 +20,6 @@ const executeQuery = async (query, params = {}) => {
     }
 };
 
-// Original Page API: Handles predefined queries with parameters
 app.post('/api/query', async (req, res) => {
     const { query, params } = req.body;
 
@@ -40,7 +36,6 @@ app.post('/api/query', async (req, res) => {
     }
 });
 
-// New Page API: Handles user-defined direct queries
 app.post('/api/direct_query', async (req, res) => {
     const { query } = req.body;
 
@@ -57,12 +52,10 @@ app.post('/api/direct_query', async (req, res) => {
     }
 });
 
-// Close Neo4j driver connection on server exit
 process.on('exit', async () => {
     await driver.close();
 });
 
-// Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });

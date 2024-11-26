@@ -10,26 +10,24 @@ document.getElementById('submit-query').addEventListener('click', async () => {
         query = 'MATCH (u:User {name: $name}) RETURN u';
         params = { name };
         break;
-      case 'find_friends':
-        query = 'MATCH (u:User {name: $name})-[:FRIENDS_WITH]->(friend) RETURN friend';
+      case 'find_user_reviews':
+        query = 'MATCH (u:User {name: $name})-[w:WATCHED]->(m:Movie) RETURN u.name AS User, m.title AS Movie, w.rating AS Rating';
         params = { name };
         break;
-      case 'find_movie_lovers':
-        query = 'MATCH (u:User)-[:LIKES]->(m:Movie {title: $movie}) RETURN u';
+      case 'movie_genre':
+        query = 'MATCH (m:Movie {title: $movie})-[r:HAS_GENRE]->(g:Genre) RETURN m.title AS Movie, g.name AS Genre;';
         params = { movie };
         break;
-      case 'suggest_friends':
-        query = `MATCH (u:User {name: $name})-[:FRIENDS_WITH]->(friend)-[:FRIENDS_WITH]->(suggestion)
-                 WHERE NOT (u)-[:FRIENDS_WITH]->(suggestion) AND u <> suggestion
-                 RETURN suggestion`;
-        params = { name };
+      case 'actors_list':
+        query = `MATCH (a:Actor)-[:ACTED_IN]->(m:Movie {title: $movie})
+                RETURN DISTINCT a.name AS Actor; `;
+        params = { movie };
         break;
       default:
         alert('Invalid query type');
         return;
     }
   
-    // Send the request to the backend
     const response = await fetch('http://localhost:3000/api/query', {
       method: 'POST',
       headers: {
